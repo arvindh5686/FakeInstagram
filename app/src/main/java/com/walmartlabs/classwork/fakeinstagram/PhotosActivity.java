@@ -39,6 +39,7 @@ public class PhotosActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                photosAdaper.clear();
                 getPopularphotos();
             }
         });
