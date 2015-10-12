@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class Photo {
     private String userName;
+    private String profilePicUrl;
     private String caption;
     private String imageUrl;
     private int imageHeight;
@@ -31,6 +32,14 @@ public class Photo {
 
     public String getCaption() {
         return caption;
+    }
+
+    public String getProfilePicUrl() {
+        return profilePicUrl;
+    }
+
+    public void setProfilePicUrl(String profilePicUrl) {
+        this.profilePicUrl = profilePicUrl;
     }
 
     public void setCaption(String caption) {
@@ -58,9 +67,8 @@ public class Photo {
         return imageHeight;
     }
 
-
-
     public void setImageHeight(int imageHeight) {
         this.imageHeight = imageHeight;
     }
+
 }
