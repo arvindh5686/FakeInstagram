@@ -1,6 +1,7 @@
 package com.walmartlabs.classwork.fakeinstagram;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ public class PhotosActivity extends AppCompatActivity {
     private static final String CLIENT_ID = "2e78fc0f61574050abce5c4ab6095c50";
     private ArrayList<Photo> photos;
     private PhotosAdaper photosAdaper;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,15 @@ public class PhotosActivity extends AppCompatActivity {
         ListView lvPhotos = (ListView) findViewById(R.id.lvPhotos);
         photosAdaper = new PhotosAdaper(this, photos);
         lvPhotos.setAdapter(photosAdaper);
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getPopularphotos();
+            }
+        });
+
         getPopularphotos();
     }
 
@@ -47,6 +58,7 @@ public class PhotosActivity extends AppCompatActivity {
                 try {
                     photosJson = response.getJSONArray("data");
 
+
                     for(int i=0; i<photosJson.length(); i++) {
                         JSONObject photoJson = photosJson.getJSONObject(i);
                         Photo photo = new Photo();
@@ -55,6 +67,17 @@ public class PhotosActivity extends AppCompatActivity {
                         photo.setImageUrl(photoJson.getJSONObject("images").getJSONObject("standard_resolution").getString("url"));
                         photo.setImageHeight(photoJson.getJSONObject("images").getJSONObject("standard_resolution").getInt("height"));
                         photo.setLikesCount(photoJson.getJSONObject("likes").getInt("count"));
+                        JSONArray commentsObj = photoJson.getJSONObject("comments").getJSONArray("data");//.getJSONArray("data");
+                        String lastComment = commentsObj.getJSONObject(commentsObj.length() - 1).getString("text");
+
+                        ArrayList<Comment> comments = new ArrayList<Comment>();
+                        for(int j=0; j<commentsObj.length();j++) {
+                            Comment comment = new Comment(commentsObj.getJSONObject(j).getString("text"),
+                                    commentsObj.getJSONObject(j).getJSONObject("from").getString("username"));
+                            comments.add(comment);
+                        }
+                        photo.setComments(comments);
+                      //  comments.get(comments.length() - 1);
                         photos.add(photo);
                     }
                 }
@@ -63,6 +86,7 @@ public class PhotosActivity extends AppCompatActivity {
                 }
 
                 photosAdaper.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
             }
 
             @Override

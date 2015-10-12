@@ -1,14 +1,25 @@
 package com.walmartlabs.classwork.fakeinstagram;
 
+import java.util.ArrayList;
+
 /**
  * Created by abalak5 on 10/11/15.
  */
 public class Photo {
-    public String userName;
-    public String caption;
-    public String imageUrl;
-    public int imageHeight;
-    public int likesCount;
+    private String userName;
+    private String caption;
+    private String imageUrl;
+    private int imageHeight;
+    private int likesCount;
+    private ArrayList<Comment> comments;
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
+    }
 
     public String getUserName() {
         return userName;
@@ -34,19 +45,22 @@ public class Photo {
         this.imageUrl = imageUrl;
     }
 
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Comment> comments) {
+        this.comments = comments;
+    }
+
     public int getImageHeight() {
+
         return imageHeight;
     }
 
+
+
     public void setImageHeight(int imageHeight) {
         this.imageHeight = imageHeight;
-    }
-
-    public int getLikesCount() {
-        return likesCount;
-    }
-
-    public void setLikesCount(int likesCount) {
-        this.likesCount = likesCount;
     }
 }

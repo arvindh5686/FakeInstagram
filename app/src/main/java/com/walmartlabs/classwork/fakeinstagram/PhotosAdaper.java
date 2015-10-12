@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,9 +31,13 @@ public class PhotosAdaper extends ArrayAdapter<Photo> {
         // Lookup view for data population
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
+        TextView tvLastComment = (TextView) convertView.findViewById(R.id.tvLastComment);
+
         ivPhoto.setImageResource(0);
         Picasso.with(getContext()).load(photo.getImageUrl()).fit().centerCrop().placeholder(R.mipmap.ic_launcher).into(ivPhoto);
         tvCaption.setText(photo.getCaption());
+        ArrayList<Comment> comments = photo.getComments();
+        tvLastComment.setText(comments.get(comments.size() - 1).getUserName() + " : " + comments.get(comments.size() - 1).getText());
         // Return the completed view to render on screen
         return convertView;
     }
